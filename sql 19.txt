@@ -1,0 +1,181 @@
+1. display student details whose city is pune.
+ select * from student where city='pune';
+
+2.display std details whose city is hyd or pune.
+select * from student where city='hyd'or city='pune';
+
+3.display female stds from hyd and male stds from pune and all the stds from wrgl.
+select * from student where (gender='female'and city='hyd') or (gender='male' and city='pune') or city='wrgl';
+
+4.display std details
+	-from hyd city,male stds who scored more than 70 and female who score more than 50
+	select * from student where (city='hyd'and gender='male' and marks>70) or (city='hyd' and gender='female' and marks>50);
+	-from pune only male stds
+	select * from student where city='pune' and gender='male';
+
+5.display std details who score between 50 and 80 and city should be hyd or wrgl
+ select * from student where 50<marks<80 and (city='hyd' or city='wrgl');
+
+6.display std details whose name starts with s and ends with a
+ select * from student where sname='$s' and sname='^a';
+ select * frpm student where sname like "s%a";
+
+7.display number of stds in each city
+select city,count(*) as number_of_students
+    -> from student
+    -> group by city
+    -> ;
+
+8.best city in education based on score
+ select city from student group by city
+    -> order by avg(marks)
+    -> desc
+    -> limit 1;
+
+9.top score in each city
+ select city, max(marks) from student group by city;
+
+10.display topper details in hyd
+select * from student where marks=(select max(marks) from student) and city='hyd';
+
+
+
+
+
+mysql> create database retail;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use retail;
+Database changed
+mysql> create table salespeople(snum int not null,sname varchar(30) not null,city varchar(30) not null,comm decimal(4,2) not null,primary key(snum));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into salespeople values(1001,'Peel','London',0.12);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into salespeople values(1002,'Serres','San Jose',0.13);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into salespeople values(1003,'AxelRod','New York',0.10);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into salespeople values(1004,'Motika','London',0.11);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into salespeople values(1005,'Fran','London',0.26);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into salespeople values(1007,'Rifkin','Barcelona',0.15);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| snum | sname   | city      | comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | San Jose  | 0.13 |
+| 1003 | AxelRod | New York  | 0.10 |
+| 1004 | Motika  | London    | 0.11 |
+| 1005 | Fran    | London    | 0.26 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
++------+---------+-----------+------+
+6 rows in set (0.00 sec)
+
+mysql> create table customer(cnum int not null,cname varchar(30) not null,city varchar(30) not null,rating int not null,snum int not null,primary key(cnum),foreign key(snum) references salespeople(snum));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into customer values(2001,'Hoffman','London',100,1001);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(2002,'Giovanni','Rome',200,1003);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(2003,'Liu','San Jose',200,1002);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(2004,'Grass','Berlin',300,1002);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(2006,'Clemens','London',100,1001);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(2008,'Cisneros','San Jose',300,1007);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(2007,'Pereira','Rome',100,1004);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from customer;
++------+----------+----------+--------+------+
+| cnum | cname    | city     | rating | snum |
++------+----------+----------+--------+------+
+| 2001 | Hoffman  | London   |    100 | 1001 |
+| 2002 | Giovanni | Rome     |    200 | 1003 |
+| 2003 | Liu      | San Jose |    200 | 1002 |
+| 2004 | Grass    | Berlin   |    300 | 1002 |
+| 2006 | Clemens  | London   |    100 | 1001 |
+| 2007 | Pereira  | Rome     |    100 | 1004 |
+| 2008 | Cisneros | San Jose |    300 | 1007 |
++------+----------+----------+--------+------+
+7 rows in set (0.00 sec)
+
+
+
+import string
+def check_pass(password):
+    if not 10<len(password)<15:
+        return "Password should contain atleast 10 characters and atmost 15 characters"
+    if not any(char.isupper() for char in password) or not any(char.islower() for char in password) or not any(char.isdigit() for char in password) or not any(char in string.punctuation for char in password):
+        return "Password should contains atleast 1 lowercase letter,1 uppercase letter,1 digit,1 special character"
+    if any(char.isspace() for char in password):
+        return "Password should not contain white spaces"
+    if (password[-1]=="." or password[-1]=="@"):
+        return "password should not end with dot or @ symbol"
+    else:
+        return "Strong password"
+password=input("Enter your password:")
+print(check_pass(password))
+
+
+def fact(num):
+    if num<0:
+        return "factorial is not calculated for negative numbers"
+    elif num==0 or num==1:
+        return 1
+    else:
+        return num*fact(num-1)
+num=int(input("Enter a number"))
+print(fact(num))
+        
+
+
+def total_price(cart):
+    total=0
+    if not cart:
+        print("The cart is empty.")
+        return
+    for item,price in cart.items():
+        if price>25000:
+            total+=price
+    if 25000<total<50000:
+        total*=0.9
+        return total
+    elif total>50000:
+        total=total-15*total/100
+cart = {}
+while True:
+    item = input("Enter the item name: ")
+    if item.lower() == "done":
+        break
+    price = int(input(f"Enter the cost of '{item}': "))
+    cart[item] = price
+total_price(cart)
+
+
+
+import calendar
+def leap_year(year):
+    return calendar.isleap(year)
+year=int(input("Enter the year"))
+print(leap_year(year))
+	
